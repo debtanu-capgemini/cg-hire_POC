@@ -1,0 +1,26 @@
+.appbar{
+    background: #95c7ec; /* Old browsers */
+background: -moz-linear-gradient(45deg, #95c7ec 0%, #207cca 51%, #1e5799 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(45deg, #95c7ec 0%,#207cca 51%,#1e5799 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(45deg, #95c7ec 0%,#207cca 51%,#1e5799 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    height:60px ;
+}
+#7db9e8
+#1e5799
+.nav-item>a{
+    color:white;
+}
+.appbar-brand{
+    color:white;
+    text-decoration: none !important;
+}
+.main{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+   
+}
+.align2{
+    align-self: end
+}

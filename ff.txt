@@ -1,0 +1,126 @@
+import React from 'react';
+import styles from "../css/Login.module.css";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { useTheme } from '@mui/material/styles';
+import { FormControl } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import InputAdornment from '@mui/material/InputAdornment';
+import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
+import Grid from '@mui/material/Unstable_Grid2';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`full-width-tabpanel-${index}`}
+        aria-labelledby={`full-width-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+         
+            <Typography>{children}</Typography>
+            
+        )}
+      </div>
+    );
+  }
+
+
+export default function Login() {
+    const [value, setValue] = React.useState(0);
+    const theme = useTheme();
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+      };
+    return(
+        <>
+<div className={styles.container}>
+<div className={styles.frame}>
+<Box sx={{ width: '100%' }}>
+<Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="secondary"
+          textColor="inherit"
+          variant="fullWidth"
+          aria-label="full width tabs example"
+        >
+          <Tab label="Hr Team" />
+          <Tab label="Interviewer" />
+          
+        </Tabs>
+        
+       
+        <Grid container>
+  <Grid lg={12}>
+  
+  <TabPanel value={value} index={0}>
+  <FormControl variant="standard">
+  <TextField
+   sx={{ mt: 4 }}
+        id="input-with-icon-textfield"
+        placeholder="employee id"
+        type="password"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <LockIcon />
+            </InputAdornment>
+          ),
+        }}
+        variant="standard"
+        fullWidth
+      />
+      </FormControl>
+  
+  </TabPanel>
+  
+  </Grid>
+  <Grid lg={3}>
+
+  </Grid>
+  <Grid lg={9}>
+  
+  <TabPanel value={value} index={0}>
+   <TextField
+   sx={{ mt: 4 }}
+        id="input-with-icon-textfield"
+        placeholder="password"
+        type="password"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <LockIcon />
+            </InputAdornment>
+          ),
+        }}
+        variant="standard"
+        
+      />
+  </TabPanel>
+  
+  </Grid>
+  <Grid lg={3}>
+
+  </Grid>
+</Grid>
+</Box>  
+<div className={styles.btnanimate}> 
+<a className={styles.btnsignin}>Login to your account</a> 
+</div>
+       
+</div>
+    </div>
+    </>
+
+    )
+}

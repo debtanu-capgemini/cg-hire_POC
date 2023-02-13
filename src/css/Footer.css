@@ -1,0 +1,28 @@
+.footer-component {
+  background: #95c7ec; /* Old browsers */
+  background: -moz-linear-gradient(45deg, #95c7ec 0%, #207cca 51%, #1e5799 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(45deg, #95c7ec 0%,#207cca 51%,#1e5799 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(45deg, #95c7ec 0%,#207cca 51%,#1e5799 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 1251;
+  position: relative;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  align-items: center;
+}
+
+.footer-component a {
+  text-decoration: none;
+  color: white;
+}
+
+.footer-items {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "jobId":12749112,
+    "jobName":"UI Developer",
+    "job_location":["Kolkata"],
+    "role":"font-end developer",
+    "grade":["A1", "B2","B1"],
+    "created_by":46111965,
+    "created_on":"Thu Nov 24 2022 14:55:05 GMT+0530 (India Standard Time)"
+  },
+  {
+    "jobId":12762047,
+    "jobName":"Talent Management",
+    "job_location":["Kolkata"],
+    "role":"Talent Management",
+    "grade":["A3","A1"],
+    "created_by":46111965,
+    "created_on":"Thu Nov 24 2022 14:55:05 GMT+0530 (India Standard Time)"
+  },
+  {
+    "jobId":12762047,
+    "jobName":"India SpeakUp Team",
+    "job_location":["Bangolore", "Mumbai","Gurgaon"],
+    "role":"Talent Management",
+    "grade":["A5","B1","B2"],
+    "created_by":46111965,
+    "created_on":"Thu Nov 24 2022 14:55:05 GMT+0530 (India Standard Time)"
+  }
+]
