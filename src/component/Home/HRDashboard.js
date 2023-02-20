@@ -19,6 +19,7 @@ import {
   Snackbar,
   Fab,
   TextField,
+  Popover,
 } from "@mui/material";
 import { Budget } from "./budget";
 import { TotalCustomers } from "./total-customers";
@@ -41,14 +42,16 @@ import {
 import Modal from "@mui/material/Modal";
 import ApplicantCreateForm from "../Candidate/ApplicantCreateForm";
 import Visibility from "@material-ui/icons/Visibility";
-import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
+import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import IconButton from "@material-ui/core/IconButton";
 import { useNavigate } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
-import CloseIcon from '@mui/icons-material/Close';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useHistory } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AssignmentIndOutlined } from "@mui/icons-material";
+import AssignPanellist from "../Candidate/AssignPanellist";
 const style = {
   position: "absolute",
   top: "50%",
@@ -61,32 +64,32 @@ const style = {
   p: 4,
 };
 
-const timeSlot=[
+const timeSlot = [
   {
-    value:"09:00AM - 10:00AM",
-    label:"09:00AM - 10:00AM"
+    value: "09:00AM - 10:00AM",
+    label: "09:00AM - 10:00AM",
   },
   {
-    value:"10:00AM - 11:00AM",
-    label:"10:00AM - 11:00AM"
+    value: "10:00AM - 11:00AM",
+    label: "10:00AM - 11:00AM",
   },
   {
-    value:"11:00AM - 12:00PM",
-    label:"11:00AM - 12:00PM"
+    value: "11:00AM - 12:00PM",
+    label: "11:00AM - 12:00PM",
   },
   {
-    value:"12:00PM - 01:00PM",
-    label:"12:00PM - 01:00PM"
+    value: "12:00PM - 01:00PM",
+    label: "12:00PM - 01:00PM",
   },
   {
-    value:"01:00PAM - 02:00PM",
-    label:"01:00PAM - 02:00PM"
+    value: "01:00PAM - 02:00PM",
+    label: "01:00PAM - 02:00PM",
   },
   {
-    value:"02:00PAM - 03:00PM",
-    label:"02:00PAM - 03:00PM"
+    value: "02:00PAM - 03:00PM",
+    label: "02:00PAM - 03:00PM",
   },
-]
+];
 
 let cgUserDataOriginal;
 
@@ -104,6 +107,11 @@ export default function HRDashboard() {
   const candidateTableRowsPerPage = 5;
   const interviewerTableRowsPerPage = 1;
   const navigate = useNavigate();
+
+  const [assignOpen, setAssignOpen] = useState(false);
+  const handleAssignOpen = () => setAssignOpen(true);
+  const handleAssignClose = () => setAssignOpen(false);
+
   const handleCandidateTableChangePage = (event, newPage) => {
     setCandidateTablePage(newPage);
   };
@@ -111,12 +119,12 @@ export default function HRDashboard() {
   function upperCase(str) {
     const titleCase = str
       .toLowerCase()
-      .split(' ')
-      .map(word => {
+      .split(" ")
+      .map((word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
       })
-      .join(' ');
-  
+      .join(" ");
+
     return titleCase;
   }
 
@@ -150,6 +158,7 @@ export default function HRDashboard() {
   const handleChange = (e) => {
     let candId = e.target.name;
     let interViewerId = e.target.value;
+    console.log(e.target.name, "value1");
     const filteredRows = CandidateData.map((can) => {
       if (can.id == candId) {
         can.assign = interViewerId;
@@ -161,26 +170,65 @@ export default function HRDashboard() {
 
     async function putData() {
       // let url = "http://localhost:8080/candidate";
-      let searchData = { key:"id",val:Number(candId)}
-      let url = `http://localhost:8080/candidate?q=${JSON.stringify(searchData)}`
-      let data = {assign: interViewerId};
-      console.log(url,"url11");
-      console.log(JSON.stringify(data),"json11111");
+      let searchData = { key: "id", val: Number(candId) };
+      let url = `http://localhost:8080/candidate?q=${JSON.stringify(
+        searchData
+      )}`;
+      let data = { assign: interViewerId };
+      console.log(url, "url11");
+      console.log(JSON.stringify(data), "json11111");
       const response = await fetch(url, {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify(data),
-        
       });
       const resData = await response.json();
       if (resData) {
         setOpen(true);
-        setmsg("Successfully Assigned");
+        setmsg("Successfully Assigned Panellist");
       }
     }
     putData();
+  };
+
+  const handleDateChange = (e, index) => {
+    let candId = e.target.name;
+    let interviewDate = e.target.value;
+   
+    const filteredRows = CandidateData.map((can) => {
+      if (can.id == candId) {
+        can.interviewDate = interviewDate;
+      }
+      return can;
+    });
+
+    SetCandidateData(filteredRows);
+
+    async function datePutData() {
+      // let url = "http://localhost:8080/candidate";
+      let searchData = { key: "id", val: Number(candId) };
+      let url = `http://localhost:8080/candidate?q=${JSON.stringify(
+        searchData
+      )}`;
+      let data = { interviewDate: interviewDate };
+      console.log(url, "url11");
+      console.log(JSON.stringify(data), "json11111");
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const resData = await response.json();
+      if (resData) {
+        setOpen(true);
+        setmsg("Successfully Assigned Date");
+      }
+    }
+    datePutData();
   };
 
   useEffect(() => {
@@ -211,12 +259,19 @@ export default function HRDashboard() {
     setModal(false);
   };
 
-  const editApplicant = async(userid)=>{
+  const handleSnackClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const editApplicant = async (userid) => {
     console.log(userid);
     localStorage.removeItem("activeStep");
-    navigate(`/profile/${userid}`)
-  }
-
+    navigate(`/profile/${userid}`);
+  };
 
   return (
     <Grid
@@ -230,8 +285,8 @@ export default function HRDashboard() {
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={open}
-        autoHideDuration={2000}
-        onClose={handleClose}
+        autoHideDuration={4000}
+        onClose={handleSnackClose}
       >
         <MuiAlert variant="filled" severity="success" sx={{ width: "100%" }}>
           {msg}
@@ -270,8 +325,8 @@ export default function HRDashboard() {
                 size="small"
                 onClick={handleOpen}
               >
-                <GroupAddOutlinedIcon sx={{pr:1}}/>
-                   Add Candidate
+                <GroupAddOutlinedIcon sx={{ pr: 1 }} />
+                Add Candidate
               </Button>
 
               <Modal
@@ -281,27 +336,15 @@ export default function HRDashboard() {
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                  {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-
-            Create Applicant
-
-          </Typography> */}
-                  {/* <Fab size="small" sx={{ color: "#08558d" , float:"right"}}>
-                    <CloseIcon onClick={handleClose}/>
-                  </Fab> */}
-
                   <Typography id="modal-modal-description">
                     <div className="modal-size">
-                      
                       <ApplicantCreateForm />
 
                       {/* <Signup /> */}
 
                       {/* <CandidateCreateForm /> */}
-                      <Button
-                         className="close-button"
-                         onClick={handleClose}
-                        >Close
+                      <Button className="close-button" onClick={handleClose}>
+                        Close
                       </Button>
                     </div>
                   </Typography>
@@ -332,18 +375,18 @@ export default function HRDashboard() {
                       candidateTablePage * candidateTableRowsPerPage,
                       candidateTablePage * candidateTableRowsPerPage +
                         candidateTableRowsPerPage
-                    ).map((candidate,index) => (
+                    ).map((candidate, index) => (
                       <TableRow
                         key={candidate.id}
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
                       >
-                        <TableCell align="left">{index+1}</TableCell>
+                        <TableCell align="left">{index + 1}</TableCell>
+                        <TableCell align="left">{candidate.position}</TableCell>
                         <TableCell align="left">
-                          {candidate.position}
+                          {upperCase(`${candidate.fname} ${candidate.lName}`)}
                         </TableCell>
-                        <TableCell align="left">{upperCase(`${candidate.fname} ${candidate.lName}`)}</TableCell>
                         <TableCell align="left">
                           {candidate.experience}
                         </TableCell>
@@ -380,32 +423,29 @@ export default function HRDashboard() {
                           </FormControl>
                         </TableCell>
                         <TableCell align="left">
-                        <FormControl
+                          <FormControl
                             size="small"
-                            sx={{ mt: 1, mb: 1, minWidth: 120, width: 150 }}
+                            // sx={{ mt: 1, mb: 1, minWidth: 120, width: 150 }}
                             align="left"
                           >
-                        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          label="Select Date"
-                          value={value}
-                          onChange={(newValue) => {
-                            setValue(newValue);
-                          }}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                        </LocalizationProvider> */}
-                        <TextField
-                          id="date"
-                          className="datePicker"
-                          label="Select Date"
-                          type="date"
-                          defaultValue=""
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                        />
-                        </FormControl>
+                            {/* <InputLabel>Assign Date</InputLabel> */}
+                            <TextField
+                              id="date"
+                              className="datePicker"
+                              label="Select Date"
+                              name={candidate.id.toString()}
+                              type="date"
+                              onChange={handleDateChange}
+                              value={
+                                candidate.interviewDate
+                                  ? candidate.interviewDate
+                                  : 0
+                              }
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                            />
+                          </FormControl>
                         </TableCell>
 
                         <TableCell align="left">
@@ -417,18 +457,19 @@ export default function HRDashboard() {
                             <InputLabel>Time Slots</InputLabel>
                             <Select
                               labelId="demo-simple-select-label"
-                              value={candidate.timeSlot ? candidate.timeSlot : 0}
+                              value={
+                                candidate.timeSlot ? candidate.timeSlot : 0
+                              }
                               label="Time Slots"
                               onChange={handleChange}
                               name="timeSlot"
                             >
-                              <MenuItem disabled value={0}>Time Slots</MenuItem>
+                              <MenuItem disabled value={0}>
+                                Time Slots
+                              </MenuItem>
                               {timeSlot.length > 0 &&
                                 timeSlot.map((slot) => (
-                                  <MenuItem
-                                    value={slot.value}
-                                    key={slot.value}
-                                  >
+                                  <MenuItem value={slot.value} key={slot.value}>
                                     {slot.label}
                                   </MenuItem>
                                 ))}
@@ -436,22 +477,60 @@ export default function HRDashboard() {
                           </FormControl>
                         </TableCell>
                         <TableCell align="left">
-                          <Button 
-                            size="small" 
+                          <Button
+                            size="small"
                             variant="contained"
-                            onClick={()=> editApplicant(candidate.id)}
+                            onClick={() => editApplicant(candidate.id)}
                             // onClick={()=> editApplicant(candidate.idNumber)}
-                            >
+                          >
                             Edit
                           </Button>
                         </TableCell>
                         <TableCell align="left">
                           <Button
-                          onClick={()=> editApplicant(candidate.idNumber)}
+                            onClick={() => editApplicant(candidate.idNumber)}
                           >
                             <Visibility />
                           </Button>
                         </TableCell>
+
+                        {/* assign modal start here */}
+
+                        {/* <TableCell align="left">
+                          <FormControl
+                            size="small"
+                            // sx={{ mt: 1, mb: 1, minWidth: 120, width: 150 }}
+                            align="left"
+                          >
+                            <Button
+                              color="secondary"
+                              variant="contained"
+                              size="medium"
+                              onClick={handleAssignOpen}
+                            >
+                              <AssignmentIndOutlined sx={{ pr: 1 }} />
+                              Assign
+                            </Button>
+                            <Modal
+                              id="id"
+                              open={assignOpen}
+                              onClose={handleAssignClose}
+                              aria-labelledby="modal-modal-title"
+                              aria-describedby="modal-modal-description"
+                            >
+                              <Box sx={style}>
+                                <Typography id="modal-modal-description">
+                                  <div className="modal-size">
+                                    <AssignPanellist 
+                                    edit={candidate}
+                                    Candid={candidate.id} />
+                                   
+                                  </div>
+                                </Typography>
+                              </Box>
+                            </Modal>
+                          </FormControl>
+                        </TableCell> */}
                       </TableRow>
                     ))}
                 </TableBody>
@@ -539,11 +618,10 @@ export default function HRDashboard() {
                         <TableCell align="left">
                           {cguser.profile.language}
                         </TableCell>
-                        
+
                         <TableCell align="left">
                           {cguser.profile.usertimezoneid}
                         </TableCell>
-                       
                       </TableRow>
                     ))}
                 </TableBody>

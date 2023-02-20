@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
+  avatar: 'https://picsum.photos/1200/600',
   city: 'Los Angeles',
   country: 'USA',
   jobTitle: 'Senior Developer',
@@ -58,14 +58,5 @@ export const AccountProfile = (props) => (
       </Box>
     </CardContent>
     <Divider />
-    <CardActions>
-      <Button
-        color="primary"
-        fullWidth
-        variant="text"
-      >
-        Upload picture
-      </Button>
-    </CardActions>
   </Card>
 );

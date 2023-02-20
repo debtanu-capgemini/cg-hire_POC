@@ -21,8 +21,8 @@ import { interviewStatusColoum, jobTableColoumn } from "../constants/constant";
 import "../../css/globals.css";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
-import StartIcon from '@mui/icons-material/Start';
-import Tooltip from '@mui/material/Tooltip';
+import StartIcon from "@mui/icons-material/Start";
+import Tooltip from "@mui/material/Tooltip";
 import { Visibility } from "@material-ui/icons";
 
 export default function InterviewerDashboard() {
@@ -30,7 +30,7 @@ export default function InterviewerDashboard() {
   // const [editData, setEditData] = useState("");
   const [jobsList, SetjobsList] = useState("");
   const [pendingCandidate, SetPendingCandidate] = useState("");
-  const [completeCandidate,setCompleteCandidate] = useState("")
+  const [completeCandidate, setCompleteCandidate] = useState("");
   const [candidateTablePage, setCandidateTablePage] = useState(0);
   const [jobListTablePage, setJobListTablePage] = useState(0);
   const navigate = useNavigate();
@@ -44,19 +44,19 @@ export default function InterviewerDashboard() {
   function upperCase(str) {
     const titleCase = str
       .toLowerCase()
-      .split(' ')
-      .map(word => {
+      .split(" ")
+      .map((word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
       })
-      .join(' ');
-  
+      .join(" ");
+
     return titleCase;
   }
-  
+
   const handleJobListTableChangePage = (event, newPage) => {
     setJobListTablePage(newPage);
   };
- 
+
   useEffect(() => {
     getcandData();
     getjobData();
@@ -82,8 +82,14 @@ export default function InterviewerDashboard() {
     SetjobsList(data.result);
   }
   async function getcandData() {
+    // let data = {
+    //   assign: window.sessionStorage.getItem("userId")
+    //     ? window.sessionStorage.getItem("userId")
+    //     : "",
+    // };
     let data = {
-      assign: window.sessionStorage.getItem("userId")
+      key: "assign",
+      val: window.sessionStorage.getItem("userId")
         ? window.sessionStorage.getItem("userId")
         : "",
     };
@@ -91,32 +97,31 @@ export default function InterviewerDashboard() {
 
     let response = await fetch(url);
     let resData = await response.json();
-    console.log(resData.status,"resdata");
-   
-    let pendingCandidate = resData.result.filter(({status})=> status === 0);
-    console.log(pendingCandidate,"filterData")
+    console.log(resData.status, "resdata");
+
+    let pendingCandidate = resData.result.filter(({ status }) => status === 0);
+    console.log(pendingCandidate, "filterData");
     SetPendingCandidate(pendingCandidate);
 
-    let completeCandidate = resData.result.filter(({status})=> status === 1);
-    console.log(completeCandidate,"filterData1")
+    let completeCandidate = resData.result.filter(({ status }) => status === 1);
+    console.log(completeCandidate, "filterData1");
     setCompleteCandidate(completeCandidate);
-  
   }
-  const getStatus = status => {
-    if(status === 1) return "Done"; 
-  }
-  const editFeedback = async(userid)=>{
+  const getStatus = (status) => {
+    if (status === 1) return "Done";
+  };
+  const editFeedback = async (userid) => {
     console.log(userid);
     navigate(`/feedback_/${userid}`);
-  }
-  const viewFeedback = async(userid)=>{
+  };
+  const viewFeedback = async (userid) => {
     console.log(userid);
-    navigate(`/feedback/view/${userid}`)
-  }
-  const updateFeedback = async(userid)=>{
+    navigate(`/feedback/view/${userid}`);
+  };
+  const updateFeedback = async (userid) => {
     console.log(userid);
     navigate(`/feedback/${userid}`);
-  }
+  };
   return (
     <Grid
       container
@@ -130,64 +135,76 @@ export default function InterviewerDashboard() {
         <Item elevation={5}>
           <Box className="candidate-list-box">
             <Typography sx={{ m: 1 }} variant="h4">
-              Ongoing Interview 
+              Ongoing Interview
             </Typography>
           </Box>
           <Box className="candidate-table-box">
             <TableContainer sx={{ height: 330 }}>
               <Table stickyHeader aria-label="simple table" size="small">
                 <TableHead>
-                  {
-                    pendingCandidate.length > 0 ?
-                  
-                  <TableRow>
-                    {jobTableColoumn.map((col, index) => (
-                      <TableCell
-                        sx={{ fontWeight: "bold" }}
-                        key={index}
-                        align="left"
-                      >
-                        {col.label}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                  :
-                  <h1>No pending Interview</h1>
-                    }
+                  {pendingCandidate.length > 0 ? (
+                    <TableRow>
+                      {jobTableColoumn.map((col, index) => (
+                        <TableCell
+                          sx={{ fontWeight: "bold" }}
+                          key={index}
+                          align="left"
+                        >
+                          {col.label}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ) : (
+                    <h1>No pending Interview</h1>
+                  )}
                 </TableHead>
                 <TableBody>
-                {pendingCandidate.length > 0 &&
-                    pendingCandidate.slice(
-                      candidateTablePage * candidateTableRowsPerPage,
-                      candidateTablePage * candidateTableRowsPerPage +
-                        candidateTableRowsPerPage
-                    ).map((candidate,index) => (
-                      <TableRow
-                        key={candidate.id}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                          <TableCell align="left">{index+1}</TableCell>
-                          <TableCell align="left">{candidate.position}</TableCell>
-                          <TableCell align="left">{upperCase(`${candidate.fname} ${candidate.lName}`)} </TableCell>
-                          <TableCell align="left">{candidate.experience}</TableCell>
+                  {pendingCandidate.length > 0 &&
+                    pendingCandidate
+                      .slice(
+                        candidateTablePage * candidateTableRowsPerPage,
+                        candidateTablePage * candidateTableRowsPerPage +
+                          candidateTableRowsPerPage
+                      )
+                      .map((candidate, index) => (
+                        <TableRow
+                          key={candidate.id}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell align="left">{index + 1}</TableCell>
+                          <TableCell align="left">
+                            {candidate.position}
+                          </TableCell>
+                          <TableCell align="left">
+                            {upperCase(`${candidate.fname} ${candidate.lName}`)}{" "}
+                          </TableCell>
+                          <TableCell align="left">
+                            {candidate.experience}
+                          </TableCell>
                           <TableCell align="left">{candidate.skill}</TableCell>
-                          <TableCell align="left">{"DATE"}</TableCell>
+                          <TableCell align="left">{candidate.interviewDate}</TableCell>
                           <TableCell align="left">{"SLOT"}</TableCell>
                           <TableCell align="left">
                             <Box className="joblist-action-buttons-box">
-                              {candidate.ratingScale == "" ? 
-                              <Fab size="small" color="primary" >
-                                <Tooltip title="Start Interview">
-                                <StartIcon  onClick={()=> editFeedback(candidate.id)}  /></Tooltip>{" "}
-                              </Fab>
-                              :
-                              <Fab size="small" color="primary" disabled>
-                                <Tooltip title="Interview completed">
-                                <StartIcon  onClick={()=> editFeedback(candidate.id)}  /></Tooltip>{" "}
-                              </Fab>}
-
+                              {candidate.ratingScale == "" ? (
+                                <Fab size="small" color="primary">
+                                  <Tooltip title="Start Interview">
+                                    <StartIcon
+                                      onClick={() => editFeedback(candidate.id)}
+                                    />
+                                  </Tooltip>{" "}
+                                </Fab>
+                              ) : (
+                                <Fab size="small" color="primary" disabled>
+                                  <Tooltip title="Interview completed">
+                                    <StartIcon
+                                      onClick={() => editFeedback(candidate.id)}
+                                    />
+                                  </Tooltip>{" "}
+                                </Fab>
+                              )}
 
                               {/* <Fab size="small" color="success">
                                 <EditIcon onClick={()=> updateFeedback(candidate.id)} />{" "}
@@ -244,45 +261,49 @@ export default function InterviewerDashboard() {
                 </TableHead>
                 <TableBody>
                   {completeCandidate.length > 0 &&
-                    completeCandidate.slice(
-                      jobListTablePage * jobListTableRowsPerPage,
-                      jobListTablePage * jobListTableRowsPerPage +
-                      jobListTableRowsPerPage
-                    ).map((candidate,index) => (
-                      <TableRow
-                        key={candidate.id}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell align="left">{index+1}</TableCell>
-                        <TableCell align="left">
-                          {candidate.position}
-                        </TableCell>
-                        <TableCell align="left">{upperCase(`${candidate.fname} ${candidate.lName}`)}</TableCell>
-                        <TableCell align="left">
-                          {candidate.experience}
-                        </TableCell>
-                        <TableCell align="left">{candidate.skill}</TableCell>
-                        <TableCell align="left">
-                          {upperCase(`${candidate.location}`)}
-                        </TableCell>
-                        <TableCell align="left">{getStatus(candidate.status)}</TableCell>
-                        <TableCell align="left">
-                          <Button
-                          onClick={()=> viewFeedback(candidate.id)}
-                          >
-                            <Visibility />
-                          </Button>
-                        </TableCell>
-                        {/* <TableCell align="center">{candidate.assign}</TableCell> */}
-                        {/* <TableCell align="center">
+                    completeCandidate
+                      .slice(
+                        jobListTablePage * jobListTableRowsPerPage,
+                        jobListTablePage * jobListTableRowsPerPage +
+                          jobListTableRowsPerPage
+                      )
+                      .map((candidate, index) => (
+                        <TableRow
+                          key={candidate.id}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell align="left">{index + 1}</TableCell>
+                          <TableCell align="left">
+                            {candidate.position}
+                          </TableCell>
+                          <TableCell align="left">
+                            {upperCase(`${candidate.fname} ${candidate.lName}`)}
+                          </TableCell>
+                          <TableCell align="left">
+                            {candidate.experience}
+                          </TableCell>
+                          <TableCell align="left">{candidate.skill}</TableCell>
+                          <TableCell align="left">
+                            {upperCase(`${candidate.location}`)}
+                          </TableCell>
+                          <TableCell align="left">
+                            {getStatus(candidate.status)}
+                          </TableCell>
+                          <TableCell align="left">
+                            <Button onClick={() => viewFeedback(candidate.id)}>
+                              <Visibility />
+                            </Button>
+                          </TableCell>
+                          {/* <TableCell align="center">{candidate.assign}</TableCell> */}
+                          {/* <TableCell align="center">
                           <Button size="small" variant="contained">
                             Edit
                           </Button>
                         </TableCell> */}
-                      </TableRow>
-                    ))}
+                        </TableRow>
+                      ))}
                 </TableBody>
               </Table>
             </TableContainer>

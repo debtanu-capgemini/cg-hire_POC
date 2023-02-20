@@ -11,6 +11,7 @@ export const candidateTableColoumn = [
   { label: "Time Slot", width: "10%" },
   { label: "Action", width: "10%" },
   { label: "View", width: "5%" }
+  // { label: "assign", width:"5%"}
 ];
 export const interviewStatusColoum =[
   { label: "No", width: "5%" },

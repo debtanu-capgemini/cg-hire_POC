@@ -117,6 +117,7 @@ const ApplicantEditForm = ({ edit, Candid }) => {
       city: edit.address.city,
       address1: edit.address.address1,
       pincode: edit.address.pincode,
+      interviewDate:edit.interviewDate
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -176,6 +177,12 @@ const ApplicantEditForm = ({ edit, Candid }) => {
             comment: edit.flexibility.comment,
           },
           remark: edit.remark,
+          resume:edit.resume,
+          photo:edit.photo,
+          strongSkills:edit.strongSkills,
+          trainingRequire:edit.trainingRequire,
+          timeSlot:edit.timeSlot,
+          interviewDate:values["interviewDate"]
           // resume: values["resume"],
         };
         let obj = {
@@ -717,7 +724,27 @@ const ApplicantEditForm = ({ edit, Candid }) => {
               </FormControl>
             </Grid>
 
-            <Grid item md={4} xs={12}></Grid>
+            {/* <Grid item md={4} xs={12}>
+            <FormControl
+                size="small"
+                sx={{ mt: 1, mb: 1, minWidth: 120, width: 150 }}
+                align="left"
+              >
+              <TextField
+                id="date"
+                className="datePicker"
+                label="Select Date"
+                name="interviewDate"
+                type="date"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.interviewDate}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              </FormControl>
+            </Grid> */}
             <Grid item md={4} xs={12}></Grid>
           </Grid>
         </Box>

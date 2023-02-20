@@ -55,6 +55,7 @@ export default function Login(props) {
       };
       async function loginUser(credentials) {
     let url = `http://localhost:8080/login/${JSON.stringify(credentials)}`;
+    console.log(url,"url");
     let response = await fetch(url);
     let data = await response.json();
 

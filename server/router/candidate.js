@@ -55,7 +55,7 @@ CandidateRouter.route("/")
       let body = req.body;
       // let candId = body.candId;
       let assign = body.assign?body.assign:"";
-      
+      let interviewDate = body.interviewDate? body.interviewDate:"";
       let getdata = JSON.parse(req.query.q);
       let searchField = getdata.key;
       let searchVal = getdata.val;
@@ -64,8 +64,15 @@ CandidateRouter.route("/")
       for (let i = 0; i < candidate.length; i++) {
         if (candidate[i][searchField] === searchVal) {
            if (Object.keys(body).length === 1) {
-                  candidate[i].assign = assign;
-                  msg="Successfully Asigned";
+            if(req.body.assign){
+              candidate[i].assign = assign;
+              msg="Successfully Asigned";
+            }else{
+              candidate[i].interviewDate = interviewDate;
+                  msg="Successfully Asigned date";
+            }
+
+                  
                 }
                 else{
                   candidate[i] = body;

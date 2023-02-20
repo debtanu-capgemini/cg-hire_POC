@@ -239,11 +239,11 @@ td {
 } */
 
 .create_header {
-
   display: flex;
-
   color: rgb(86, 86, 185);
-
+  margin: -30px !important;
+  padding-left: 30px;
+  padding-bottom: 15px;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -357,4 +357,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 .candidateImage{
   border: 50% !important;
+  background-color: #c8c8c8 !important;
+}
+.avatarT2{
+  font-size: 13px !important;
+  color: #949598 !important;
+  padding-bottom: 5 px;
 }

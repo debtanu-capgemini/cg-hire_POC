@@ -13,6 +13,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Card,
+  CardMedia,
 } from "@mui/material";
 
 import "../../css/globals.css";
@@ -25,7 +27,13 @@ const ApplicantCreateForm = () => {
   const [jobIdData, SetjobIdData] = useState("");
   const [open, setOpen] = useState(false);
   const [msg, setmsg] = useState("");
+  const [image, setImage] = useState();
   let phoneRegExp = new RegExp(/(0|91)?[6-9][0-9]{9}/);
+
+  function handleChange(e) {
+    console.log(e.target.files);
+    setImage(URL.createObjectURL(e.target.files[0]));
+}
 
   const location = [
     {
@@ -111,9 +119,7 @@ const ApplicantCreateForm = () => {
       address1: "",
       pincode: "",
       resume: "",
-      strongSkills:"",
-      trainingRequire:"",
-      timeSlot:""
+      photo:""
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -122,7 +128,7 @@ const ApplicantCreateForm = () => {
       //file upload done here
       const upldUrl = "http://localhost:8080/upload_files";
       const upLdData = new FormData();
-      upLdData.append("resume", UploadFile);
+      upLdData.append("files", UploadFile);
       const config = {
         headers: {
           "Content-type": "multipart/form-data",
@@ -154,6 +160,7 @@ const ApplicantCreateForm = () => {
             pincode: values["pincode"],
           },
           resume: values["resume"],
+          photo:values["photo"],
           isActive: true,
           ratingScale:"",
           ModeOfInterview:"",
@@ -189,7 +196,7 @@ const ApplicantCreateForm = () => {
           strongSkills:"",
           trainingRequire:"",
           timeSlot:"",
-
+          interviewDate:""
         };
         console.log(obj);
         const response = await fetch(url, {
@@ -223,12 +230,12 @@ const ApplicantCreateForm = () => {
       
       <form onSubmit={formik.handleSubmit}>
         <Box sx={{ my: 1 }}>
-          <Typography variant="h4" component="div" className="create_header">
+          <Typography variant="h5"  className="create_header">
             Create Applicants
           </Typography>
         </Box>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           <Grid item md={4} xs={12}>
             <TextField
               error={Boolean(formik.touched.fName && formik.errors.fName)}
@@ -493,10 +500,9 @@ const ApplicantCreateForm = () => {
               fullWidth
             />
           </Grid>
-
           <Grid item md={4} xs={12}></Grid>
           <Grid item md={4} xs={12}></Grid>
-          <Grid item md={4} xs={12}>
+          <Grid item md={3} xs={12}>
             <label className="file_label">Upload Your Resume *</label>
             <input
               type="file"
@@ -510,6 +516,39 @@ const ApplicantCreateForm = () => {
               required
             />
           </Grid>
+          
+          {/* <Grid item md={8} xs={12}></Grid> */}
+          <Grid item md={1} xs={12}>
+          
+          </Grid>
+          <Grid item md={3} xs={12}>
+            <label className="file_label">Upload Candidate Photo *</label>
+            <input
+              type="file"
+              placeholder="upload photo"
+              // onChange={formik.handleChange}
+              onChange={handleChange}
+              onBlur={(e) => fileUpload(e)}
+              id="photo"
+              name="photo"
+              accept=".jpg,.jpeg,.png"
+              required
+            />
+          </Grid>
+          <Grid item md={3} xs={12}>
+          <Card sx={{ maxWidth: 80,ml:12,justifyContent: 'center',mt:-2 }}>
+        
+            <CardMedia 
+                className="candidateImage"
+                component="img"
+                height="80"
+                src={image}
+                // image="https://picsum.photos/1200/600"
+                alt=""
+            />
+            </Card>
+          </Grid>
+          
         </Grid>
 
         <Box sx={{ py: 2 }} className="createForm_submit_button" >
